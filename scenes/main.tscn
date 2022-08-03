@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="Main" type="Node2D"]
+
+[node name="SceneManager" type="Node2D" parent="."]
+
+[node name="AudioManager" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioManager"]
