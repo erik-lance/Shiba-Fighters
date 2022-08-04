@@ -5,8 +5,8 @@ onready var challengers_node = $Challengers
 onready var camera = $Camera2D
 
 var tile_size = {
-	x = 16,
-	y = 16
+	x = 64,
+	y = 64
 }
 
 var arena_size = {
@@ -42,5 +42,18 @@ func prepare_fighter(side=0):
 	challengers_node.add_child(fighter)
 	if side==0: fighter.set_name('Player')
 	else: fighter.set_name('Enemy')
-	
+
+func prepare_arena():
+	for y in arena_size.y:
+		for x in arena_size.x:
+			var new_tile = load("res://scenes/arena/tile.tscn").instance()
+			map.add_child(new_tile)
+			
+			print('tile')
+			print(x)
+			print(y)
+			
+			new_tile.position.x = x * tile_size.x
+			new_tile.position.y = y * tile_size.y
+	set_camera_center()
 
