@@ -16,6 +16,9 @@ var arena_size = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	prepare_arena()
+	prepare_fighter(0)
+	prepare_fighter(1)
 	pass # Replace with function body.
 
 func change_tile_size(x=0,y=0):
@@ -37,11 +40,21 @@ func set_camera_center():
 
 # 0 = player
 # 1 = enemy
-func prepare_fighter(side=0):
+func prepare_fighter(side=0, data="res://scenes/arena/fighters/shiba.tscn"):
 	var fighter = load("res://scenes/arena/fighter.tscn").instance()
 	challengers_node.add_child(fighter)
 	if side==0: fighter.set_name('Player')
 	else: fighter.set_name('Enemy')
+	
+	var fighter_data = load(data).instance()
+	fighter.add_child(fighter_data)
+	
+	if side==0:
+		fighter.position.x = tile_size.x * 0 + tile_size.x / 2
+		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
+	else:
+		fighter.position.x = tile_size.x * 3 + tile_size.x / 2
+		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
 
 func prepare_arena():
 	for y in arena_size.y:
@@ -49,11 +62,9 @@ func prepare_arena():
 			var new_tile = load("res://scenes/arena/tile.tscn").instance()
 			map.add_child(new_tile)
 			
-			print('tile')
-			print(x)
-			print(y)
-			
 			new_tile.position.x = x * tile_size.x
 			new_tile.position.y = y * tile_size.y
+	
 	set_camera_center()
+
 
