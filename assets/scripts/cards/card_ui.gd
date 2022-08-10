@@ -1,10 +1,15 @@
-extends Node2D
+extends TextureRect
 
 onready var card_title = $Title
 onready var hp = $Numbers/HPLabel
 onready var mp = $Numbers/MPLabel
 
 onready var grid = $Grid
+
+signal card_selected()
+
+func _ready():
+	disable_button()
 
 var grid_space = {
 	0: $Grid/TOP_LEFT,
@@ -27,5 +32,9 @@ func set_card_data(card_data):
 	# Check for move tiles
 	for tile in card_data.get_child(0).get_tiles():
 		grid_space[tile].color = Color('#6eff00')
-	
-	pass
+
+func disable_button():
+	$Button.disabled
+
+func _on_Button_button_up():
+	emit_signal("card_selected")
