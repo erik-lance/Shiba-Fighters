@@ -12,24 +12,16 @@ font_data = ExtResource( 2 )
 size = 8
 font_data = ExtResource( 2 )
 
-[node name="Card" type="Node2D"]
-script = ExtResource( 3 )
-
-[node name="TextureRect" type="TextureRect" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -24.0
-margin_top = -32.0
-margin_right = 24.0
-margin_bottom = 32.0
+[node name="Card" type="TextureRect"]
+margin_right = 48.0
+margin_bottom = 64.0
 texture = ExtResource( 1 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Grid" type="GridContainer" parent="TextureRect"]
+[node name="Grid" type="GridContainer" parent="."]
 margin_left = 25.0
 margin_top = 3.0
 margin_right = 45.0
@@ -41,91 +33,82 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TOP_LEFT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="TOP_LEFT" type="ColorRect" parent="Grid"]
 margin_right = 6.0
 margin_bottom = 6.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="TOP_CENTER" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="TOP_CENTER" type="ColorRect" parent="Grid"]
 margin_left = 7.0
 margin_right = 13.0
 margin_bottom = 6.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="TOP_RIGHT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="TOP_RIGHT" type="ColorRect" parent="Grid"]
 margin_left = 14.0
 margin_right = 20.0
 margin_bottom = 6.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="MID_LEFT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="MID_LEFT" type="ColorRect" parent="Grid"]
 margin_top = 7.0
 margin_right = 6.0
 margin_bottom = 13.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="MID_CENTER" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="MID_CENTER" type="ColorRect" parent="Grid"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 13.0
 margin_bottom = 13.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="MID_RIGHT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="MID_RIGHT" type="ColorRect" parent="Grid"]
 margin_left = 14.0
 margin_top = 7.0
 margin_right = 20.0
 margin_bottom = 13.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="BOT_LEFT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="BOT_LEFT" type="ColorRect" parent="Grid"]
 margin_top = 14.0
 margin_right = 6.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="BOT_CENTER" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="BOT_CENTER" type="ColorRect" parent="Grid"]
 margin_left = 7.0
 margin_top = 14.0
 margin_right = 13.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="BOT_RIGHT" type="ColorRect" parent="TextureRect/Grid"]
-visible = false
+[node name="BOT_RIGHT" type="ColorRect" parent="Grid"]
 margin_left = 14.0
 margin_top = 14.0
 margin_right = 20.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.431373, 1, 0, 1 )
+color = Color( 0.431373, 1, 0, 0 )
 
-[node name="Numbers" type="VBoxContainer" parent="TextureRect"]
+[node name="Numbers" type="VBoxContainer" parent="."]
 margin_left = 2.0
 margin_top = 4.0
 margin_right = 22.0
@@ -136,7 +119,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HPLabel" type="Label" parent="TextureRect/Numbers"]
+[node name="HPLabel" type="Label" parent="Numbers"]
 margin_right = 20.0
 margin_bottom = 10.0
 size_flags_vertical = 7
@@ -148,7 +131,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MPLabel" type="Label" parent="TextureRect/Numbers"]
+[node name="MPLabel" type="Label" parent="Numbers"]
 margin_top = 10.0
 margin_right = 20.0
 margin_bottom = 20.0
@@ -161,7 +144,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="Label" parent="TextureRect"]
+[node name="Title" type="Label" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
