@@ -50,11 +50,14 @@ func prepare_fighter(side=0, data="res://scenes/arena/fighters/shiba.tscn"):
 	fighter.add_child(fighter_data)
 	
 	if side==0:
-		fighter.position.x = tile_size.x * 0 + tile_size.x / 2
+		fighter.position.x = tile_size.x * 0 + tile_size.x / 4
 		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
+		fighter.ready_fighter(0)
 	else:
-		fighter.position.x = tile_size.x * 3 + tile_size.x / 2
+		fighter.position.x = tile_size.x * 3 + tile_size.x - tile_size.x / 4
 		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
+		fighter.get_child(0).scale.x = -1
+		fighter.ready_fighter(1)
 
 func prepare_arena():
 	for y in arena_size.y:
