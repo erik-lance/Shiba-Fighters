@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/cards/card_data.tscn" type="PackedScene" id=1]
+
+[node name="Rasengan" type="Node2D"]
+
+[node name="CardData" parent="." instance=ExtResource( 1 )]
+dmge = 50
+mana = 45
+card_name = "Rasengan"
+card_desc = "Deals a strong close-ranged attack that utilizes a spinning ball of mana"
+
+[node name="Damage" parent="CardData" index="0"]
+mid_left = true
+mid_right = true
+
+[editable path="CardData"]
