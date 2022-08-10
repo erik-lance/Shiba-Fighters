@@ -3,6 +3,8 @@ extends Node2D
 signal hit_hp(hp)
 signal use_mp(mp)
 
+var side
+
 var max_hp
 var cur_hp
 
@@ -13,12 +15,14 @@ var cur_mp
 func _ready():
 	pass # Replace with function body.
 
-func ready_fighter(hp=100, mp=100):
+func ready_fighter(side=0, hp=100, mp=100):
 	max_hp = hp
 	cur_hp = hp
 	
 	max_mp = mp
 	cur_mp = mp
+	
+	side = side
 
 func regen_mp(mp):
 	cur_mp +=  mp
