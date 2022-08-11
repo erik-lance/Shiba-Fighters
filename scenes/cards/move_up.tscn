@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/cards/card_data.tscn" type="PackedScene" id=1]
+
+[node name="MoveUp" type="Node2D"]
+
+[node name="CardData" parent="." instance=ExtResource( 1 )]
+card_name = "Move Up"
+card_desc = "Moves unit up"
+
+[node name="Move" parent="CardData" index="0"]
+top_center = true
+
+[editable path="CardData"]
