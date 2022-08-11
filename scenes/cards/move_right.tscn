@@ -7,6 +7,7 @@
 [node name="CardData" parent="." instance=ExtResource( 1 )]
 card_name = "Move Right"
 card_desc = "Moves unit to the right"
+anim_name = "move_right"
 
 [node name="Move" parent="CardData" index="0"]
 mid_right = true

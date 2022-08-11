@@ -8,6 +8,7 @@ export (int) var prot = 0
 
 export (String) var card_name
 export (String) var card_desc
+export (String) var anim_name
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
