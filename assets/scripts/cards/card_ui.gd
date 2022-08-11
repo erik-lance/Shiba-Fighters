@@ -40,6 +40,15 @@ func set_card_data(card_data):
 		for tile in card_data.get_child(1).get_tiles():
 			grid_space[tile].color = Color.red
 
+func reset_card():
+	card_title.text = '?'
+	hp.text = '?'
+	mp.text = '?'
+	card_ref = null
+	
+	for tile in grid_space:
+		tile.color = Color('#006eff00')
+
 func disable_button():
 	$Button.disabled
 
