@@ -4,6 +4,10 @@ var shiba_fight_cards = {
 	rasengan = "res://scenes/cards/shiba/rasengan.tscn"
 }
 
+var basic_cards = {
+	regen = "res://scenes/cards/regen_mana.tscn"
+}
+
 var move_cards = {
 	up = "res://scenes/cards/move_up.tscn",
 	right = "res://scenes/cards/move_right.tscn",
@@ -19,6 +23,11 @@ func get_shiba_cards():
 	var cards = []
 	for moves in move_cards:
 		var card = load(move_cards[moves]).instance()
+		cards.append(card.get_child(0))
+		self.add_child(card)
+	
+	for basic_card in basic_cards:
+		var card = load(basic_cards[basic_card]).instance()
 		cards.append(card.get_child(0))
 		self.add_child(card)
 	
