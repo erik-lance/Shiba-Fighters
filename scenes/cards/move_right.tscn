@@ -9,6 +9,6 @@ card_name = "Move Right"
 card_desc = "Moves unit to the right"
 
 [node name="Move" parent="CardData" index="0"]
-top_right = true
+mid_right = true
 
 [editable path="CardData"]
