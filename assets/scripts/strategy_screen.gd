@@ -20,7 +20,7 @@ func empty_deck():
 
 func empty_selection():
 	for selection_child in selection.get_children():
-		selection_child.queue_free()
+		selection_child.get_child(0).reset_card()
 
 func set_deck(cards):
 	empty_deck()
@@ -41,12 +41,11 @@ func _on_Card_Selected(ref):
 	# Figure out the stats thing later i guess
 	
 	card_wrapper.get_child(2).text = ref.get_card_desc()
+	cur_card = ref
 
 func _on_AddCard_button_up():
 	if card_selection.size() < 3:
-		var card_obj = load("res://scenes/ui/card.tscn").instance()
-		card_obj.set_card_data(cur_card)
-		selection.add_child(card_obj)
+		selection.get_child(card_selection.size()).get_child(0).set_card_data(cur_card)
 		card_selection.append(cur_card)
 
 
@@ -57,6 +56,6 @@ func _on_Start_button_up():
 
 func _on_Remove_button_up():
 	empty_selection()
-	card_selection = null
+	card_selection = []
 
 
