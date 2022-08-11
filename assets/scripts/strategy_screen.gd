@@ -20,7 +20,7 @@ func empty_deck():
 
 func empty_selection():
 	for selection_child in selection.get_children():
-		selection_child.get_child(0).reset_card()
+		selection_child.reset_card()
 
 func set_deck(cards):
 	empty_deck()
@@ -45,7 +45,7 @@ func _on_Card_Selected(ref):
 
 func _on_AddCard_button_up():
 	if card_selection.size() < 3:
-		selection.get_child(card_selection.size()).get_child(0).set_card_data(cur_card)
+		selection.get_child(card_selection.size()).set_card_data(cur_card)
 		card_selection.append(cur_card)
 
 

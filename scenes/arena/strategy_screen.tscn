@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/scripts/strategy_screen.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/strat_screen/strategy_screen_padded.png" type="Texture" id=2]
@@ -29,8 +29,6 @@ VScrollBar/styles/grabber = SubResource( 1 )
 VScrollBar/styles/grabber_highlight = SubResource( 4 )
 VScrollBar/styles/grabber_pressed = SubResource( 5 )
 VScrollBar/styles/scroll = SubResource( 2 )
-
-[sub_resource type="StyleBoxEmpty" id=10]
 
 [sub_resource type="DynamicFont" id=6]
 size = 11
@@ -182,40 +180,21 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Slot1" type="PanelContainer" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards"]
-margin_right = 48.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 10 )
-
-[node name="Card" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards/Slot1" instance=ExtResource( 6 )]
+[node name="Card" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards" instance=ExtResource( 6 )]
 size_flags_horizontal = 13
 size_flags_vertical = 13
 stretch_mode = 5
 
-[node name="Slot2" type="PanelContainer" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards"]
+[node name="Card2" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards" instance=ExtResource( 6 )]
 margin_left = 49.0
 margin_right = 97.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 10 )
-
-[node name="Card2" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards/Slot2" instance=ExtResource( 6 )]
 size_flags_horizontal = 13
 size_flags_vertical = 13
 stretch_mode = 5
 
-[node name="Slot3" type="PanelContainer" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards"]
+[node name="Card3" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards" instance=ExtResource( 6 )]
 margin_left = 98.0
 margin_right = 146.0
-margin_bottom = 64.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 10 )
-
-[node name="Card3" parent="CanvasLayer/TextureRect/SetCardWrapper/SelectedCards/Slot3" instance=ExtResource( 6 )]
 size_flags_horizontal = 13
 size_flags_vertical = 13
 stretch_mode = 5
