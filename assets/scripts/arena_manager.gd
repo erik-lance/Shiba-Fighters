@@ -1,8 +1,17 @@
 extends Node2D
 
+signal arena_finished(player, enemy)
+signal player_finished(anim_name)
+signal enemy_finished(anim_name)
+
 onready var map = $Map
 onready var challengers_node = $Challengers
 onready var camera = $Camera2D
+
+var fighter_node = {
+	player = null,
+	enemy = null
+}
 
 var tile_size = {
 	x = 64,
@@ -16,10 +25,13 @@ var arena_size = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
+
+func prepare_tester():
 	prepare_arena()
 	prepare_fighter(0)
 	prepare_fighter(1)
-	pass # Replace with function body.
+	_on_loaded_arena()
 
 func change_tile_size(x=0,y=0):
 	if y==0: y = x
@@ -53,11 +65,15 @@ func prepare_fighter(side=0, data="res://scenes/arena/fighters/shiba.tscn"):
 		fighter.position.x = tile_size.x * 0 + tile_size.x / 4
 		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
 		fighter.ready_fighter(0)
+		fighter_node.player = fighter
+		fighter.connect('anim_done',self,'_on_player_unit_done')
 	else:
 		fighter.position.x = tile_size.x * 3 + tile_size.x - tile_size.x / 4
 		fighter.position.y = tile_size.y * 1 + tile_size.y / 2
 		fighter.get_child(0).scale.x = -1
 		fighter.ready_fighter(1)
+		fighter_node.enemy = fighter
+		fighter.connect('anim_done',self,'_on_enemy_unit_done')
 
 func prepare_arena():
 	for y in arena_size.y:
@@ -70,4 +86,11 @@ func prepare_arena():
 	
 	set_camera_center()
 
+func _on_loaded_arena():
+	emit_signal("arena_finished",fighter_node.player,fighter_node.enemy)
 
+func _on_player_unit_done(anim_name):
+	emit_signal("player_finished",anim_name)
+
+func _on_enemy_unit_done(anim_name):
+	emit_signal("enemy_finished",anim_name)
