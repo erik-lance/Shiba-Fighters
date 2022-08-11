@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/cards/card_data.tscn" type="PackedScene" id=1]
+
+[node name="RegenMana" type="Node2D"]
+
+[node name="CardData" parent="." instance=ExtResource( 1 )]
+mana = 15
+card_name = "Regen mana"
+card_desc = "Regenerates mana for the unit"
+anim_name = "regen_mana"
+
+[node name="Mana" parent="CardData" index="2"]
+mid_center = true
+
+[editable path="CardData"]
