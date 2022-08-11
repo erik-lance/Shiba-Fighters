@@ -29,8 +29,9 @@ func set_deck(cards):
 	for card in cards:
 		var card_obj = load("res://scenes/ui/card.tscn").instance()
 		print(card.get_card_name())
-		card_obj.set_card_data(card)
 		deck.add_child(card_obj)
+		card_obj.set_card_data(card)
+		
 		card_obj.connect("card_selected",self,"_on_Card_Selected")
 
 
