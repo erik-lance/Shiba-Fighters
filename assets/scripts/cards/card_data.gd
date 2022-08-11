@@ -32,3 +32,4 @@ func set_card_desc(d): card_desc = d
 func get_card_name(): return card_name
 func get_card_desc(): return card_desc
 
+func get_anim_name(): return anim_name
