@@ -1,9 +1,9 @@
 extends Node2D
 
-export (int) var dmge
-export (int) var mana
-export (int) var heal
-export (int) var prot
+export (int) var dmge = 0
+export (int) var mana = 0
+export (int) var heal = 0
+export (int) var prot = 0
 
 
 export (String) var card_name
