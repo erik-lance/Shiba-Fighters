@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/scripts/fx_handler.gd" type="Script" id=1]
+
+[node name="FX" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="FXMain" type="Sprite" parent="."]
+hframes = 5
+vframes = 2
+
+[node name="FXTop" type="Sprite" parent="."]
+position = Vector2( 0, -64 )
+hframes = 4
+vframes = 4
+frame = 11
+
+[node name="FXLeft" type="Sprite" parent="."]
+position = Vector2( -64, 0 )
+hframes = 4
+vframes = 4
+frame = 11
+
+[node name="FXMid" type="Sprite" parent="."]
+hframes = 4
+vframes = 4
+
+[node name="FXRight" type="Sprite" parent="."]
+position = Vector2( 64, 0 )
+hframes = 4
+vframes = 4
+frame = 11
+
+[node name="FXBot" type="Sprite" parent="."]
+position = Vector2( 0, 64 )
+hframes = 4
+vframes = 4
+frame = 11
+
+[node name="FXTopLeft" type="Sprite" parent="."]
+position = Vector2( -64, -64 )
+
+[node name="FXTopRight" type="Sprite" parent="."]
+position = Vector2( 64, -64 )
+
+[node name="FXBotLeft" type="Sprite" parent="."]
+position = Vector2( -64, 64 )
+
+[node name="FXBotRight" type="Sprite" parent="."]
+position = Vector2( 64, 64 )
