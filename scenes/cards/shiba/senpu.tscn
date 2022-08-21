@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/cards/card_data.tscn" type="PackedScene" id=1]
+
+[node name="Senpu" type="Node2D"]
+
+[node name="CardData" parent="." instance=ExtResource( 1 )]
+dmge = 15
+mana = 25
+card_name = "Senpu"
+card_desc = "The shiba spins to summon a hurricane around the area"
+anim_name = "spin"
+
+[node name="Damage" parent="CardData" index="1"]
+top_left = true
+top_center = true
+top_right = true
+mid_left = true
+mid_right = true
+bot_left = true
+bot_center = true
+bot_right = true
+
+[editable path="CardData"]

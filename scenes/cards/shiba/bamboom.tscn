@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/cards/card_data.tscn" type="PackedScene" id=1]
+
+[node name="Bamboom" type="Node2D"]
+
+[node name="CardData" parent="." instance=ExtResource( 1 )]
+dmge = 45
+mana = 50
+card_name = "Bamboom"
+card_desc = "Creates a devastating blow from a bamboo tree falling over"
+anim_name = "bamboom"
+
+[node name="Damage" parent="CardData" index="1"]
+top_center = true
+mid_left = true
+mid_right = true
+bot_center = true
+
+[editable path="CardData"]
