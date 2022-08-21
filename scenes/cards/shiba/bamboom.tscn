@@ -5,8 +5,8 @@
 [node name="Bamboom" type="Node2D"]
 
 [node name="CardData" parent="." instance=ExtResource( 1 )]
-dmge = 45
-mana = 50
+dmge = 35
+mana = 45
 card_name = "Bamboom"
 card_desc = "Creates a devastating blow from a bamboo tree falling over"
 anim_name = "bamboom"
