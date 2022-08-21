@@ -1,7 +1,10 @@
 extends Node2D
 
 var shiba_fight_cards = {
-	rasengan = "res://scenes/cards/shiba/rasengan.tscn"
+	rasengan = "res://scenes/cards/shiba/rasengan.tscn",
+	senpu = "res://scenes/cards/shiba/senpu.tscn",
+	sudoku = "res://scenes/cards/shiba/sudoku.tscn",
+	bamboom = "res://scenes/cards/shiba/bamboom.tscn"
 }
 
 var basic_cards = {
