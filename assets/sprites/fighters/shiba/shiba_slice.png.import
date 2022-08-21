@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/shiba_slice_bamboom.png-4ba05c4c2d27c1ba042cf6529a6c5701.stex"
+path="res://.import/shiba_slice.png-34406baf68bed0c20ccb42df19f847d2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/fighters/shiba/shiba_slice_bamboom.png"
-dest_files=[ "res://.import/shiba_slice_bamboom.png-4ba05c4c2d27c1ba042cf6529a6c5701.stex" ]
+source_file="res://assets/sprites/fighters/shiba/shiba_slice.png"
+dest_files=[ "res://.import/shiba_slice.png-34406baf68bed0c20ccb42df19f847d2.stex" ]
 
 [params]
 
