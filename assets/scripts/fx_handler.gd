@@ -28,7 +28,8 @@ func place_on_tile(n=9,obj=null):
 func clear_tile(n=-1):
 	if n==-1:
 		for tile in fx_tiles:
-			tile.get_child(0).queue_free()
+			if (tile.get_child_count() > 0):
+				tile.get_child(0).queue_free()
 	else:
 		fx_tiles[n].get_child(0).queue_free()
 
