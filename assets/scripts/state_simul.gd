@@ -24,3 +24,49 @@ func prep_dets(dets):
 	cur_state.player_mp = dets.player_mp
 	cur_state.self_hp = dets.self_hp
 	cur_state.self_mp = dets.self_mp
+
+#
+#
+# CALCULATION TOOLS
+#
+#
+func check_self_grid(dir):
+	var x = cur_state.self_pos_x
+	var y = cur_state.self_pos_y
+	
+	match(dir):
+		0:
+			x-=1
+			y-=1
+		1:
+			y-=1
+		2:
+			x+=1
+			y-=1
+		3:
+			x-=1
+		5:
+			x+=1
+		6:
+			x-=1
+			y+=1
+		7:
+			y+=1
+		8:
+			x+=1
+			y+=1
+	
+	if cur_state.player_pos_x == x and cur_state.player_pos_y == y:
+		return true
+	else:
+		return false
+
+func check_atk_distance(grid):
+	pass
+
+# Grabs manhattan distance of two points.
+func get_cur_distance():
+	var x = abs(cur_state.player_pos_x - cur_state.self_pos_x)
+	var y = abs(cur_state.player_pos_y - cur_state.self_pos_y)
+	var dist = x + y
+	return dist
