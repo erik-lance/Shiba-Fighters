@@ -36,9 +36,15 @@ func set_card_data(card_data):
 		for tile in card_data.get_child(0).get_tiles():
 			grid_space[tile].color = Color('#6eff00')
 
+	# damage
 	if card_data.get_child(1).get_tiles() != null:
 		for tile in card_data.get_child(1).get_tiles():
 			grid_space[tile].color = Color.red
+	
+	# mana
+	if card_data.get_child(2).get_tiles() != null:
+		for tile in card_data.get_child(2).get_tiles():
+			grid_space[tile].color = Color.blue
 
 func reset_card():
 	card_title.text = '?'
