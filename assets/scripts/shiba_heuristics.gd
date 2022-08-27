@@ -75,6 +75,31 @@ func get_grid_atk(atk=0):
 			print('Invalid Move!')
 			return null
 
+# 0-3 Move U/L/D/R
+# 4 Regen
+# 5 Guard
+# 6 Perfect Guard
+# 7 Bamboom
+# 8 Rasengan
+# 9 Senpu
+# 10 Sudoku
+# 11 Burst Limit
+func is_move_playable(move=0,cost=0):
+	match(move):
+		0: return true
+		1: return true
+		2: return true
+		3: return true
+		4: return true
+		5: return true
+		6: if cost>= get_regen(0,1): return true
+		7: if cost>= get_lethality(0,1): return true
+		8: if cost>= get_lethality(1,1): return true
+		9: if cost>= get_lethality(2,1): return true
+		10: if cost>= get_lethality(3,1): return true
+		11: if cost>= 80: return true
+	return false
+
 # Grabs how lethal each blow from an attack is
 func get_lethality(atk=0,cost=0):
 	if cost==0:
