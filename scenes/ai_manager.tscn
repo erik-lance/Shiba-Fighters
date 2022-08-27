@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/scripts/ai_manager.gd" type="Script" id=1]
 [ext_resource path="res://scenes/deck_manager.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/state.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/scripts/simulator.gd" type="Script" id=4]
 
 [node name="AIManager" type="Node2D"]
@@ -14,9 +13,3 @@ script = ExtResource( 1 )
 
 [node name="Simulator" type="Node2D" parent="."]
 script = ExtResource( 4 )
-
-[node name="Depth0" parent="Simulator" instance=ExtResource( 3 )]
-
-[node name="Depth1" parent="Simulator" instance=ExtResource( 3 )]
-
-[node name="Depth2" parent="Simulator" instance=ExtResource( 3 )]
