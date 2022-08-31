@@ -100,6 +100,14 @@ func is_move_playable(move=0,cost=0):
 		11: if cost>= 80: return true
 	return false
 
+func get_move_type(t=-1):
+	if t == -1: return null
+	elif t >= 0 and t <= 3: return 0
+	elif t == 4: return 1
+	elif t >= 5 and t <= 6: return 2
+	else: return 3
+	
+
 # Grabs how lethal each blow from an attack is
 func get_lethality(atk=0,cost=0):
 	if cost==0:
