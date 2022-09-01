@@ -106,7 +106,24 @@ func get_move_type(t=-1):
 	elif t == 4: return 1
 	elif t >= 5 and t <= 6: return 2
 	else: return 3
-	
+
+func get_move_type_bounds(t=-1):
+	if t == -1: return null
+	elif t == 0: return 0
+	elif t == 1: return 4
+	elif t == 2: return 5
+	elif t == 3: return 7
+	else: return 12
+
+func get_move_dist(t=-1):
+	match(t):
+		0: return moves.up
+		1: return moves.down
+		2: return moves.left
+		3: return moves.right
+		_:
+			print('Invalid move distance!')
+			return null
 
 # Grabs how lethal each blow from an attack is
 func get_lethality(atk=0,cost=0):
