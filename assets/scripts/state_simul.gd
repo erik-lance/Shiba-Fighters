@@ -4,7 +4,7 @@ signal end_state()
 
 var root = null
 var heuristic_rule = null
-var player_AI = null
+var moving_AI = null
 
 var depth = -1
 
@@ -30,6 +30,53 @@ var cur_state = {
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
+
+func perform_move():
+	if self_turn:
+		if moving_AI.is_move_playable(move_num,cur_state.self_mp):
+			var move_set_num = move_num - moving_AI.get_move_type_bounds(moving_AI.get_move_type(move_num))
+			match(moving_AI.get_move_type(move_num)):
+				0: # Move
+					match(move_num):
+						0: cur_state.self_pos_y -= moving_AI.get_move_dist(move_num)
+						1: cur_state.self_pos_y += moving_AI.get_move_dist(move_num)
+						2: cur_state.self_pos_x -= moving_AI.get_move_dist(move_num)
+						3: cur_state.self_pos_x += moving_AI.get_move_dist(move_num)
+						_: print('Invalid state move distance')
+				1: # Regen Moves
+					cur_state.self_mp += moving_AI.get_regen(move_set_num,1)
+				2: # Guard Moves
+					pass
+				3: # Attack Moves
+					cur_state.self_mp -= moving_AI.get_lethality(move_set_num,1)
+					var atk_grid = moving_AI.get_grid_atk(move_set_num)
+					if check_atk_distance(atk_grid):
+						cur_state.player_hp -= moving_AI.get_lethality(move_set_num)
+				_:
+					print('Unknown move type!')
+	else:
+		if moving_AI.is_move_playable(move_num,cur_state.player_mp):
+			var move_set_num = move_num - moving_AI.get_move_type_bounds(moving_AI.get_move_type(move_num))
+			match(moving_AI.get_move_type(move_num)):
+				0: # Move
+					match(move_num):
+						0: cur_state.player_pos_y -= moving_AI.get_move_dist(move_num)
+						1: cur_state.player_pos_y += moving_AI.get_move_dist(move_num)
+						2: cur_state.player_pos_x -= moving_AI.get_move_dist(move_num)
+						3: cur_state.player_pos_x += moving_AI.get_move_dist(move_num)
+						_: print('Invalid state move distance')
+				1: # Regen Moves
+					cur_state.player_mp += moving_AI.get_regen(move_set_num,1)
+				2: # Guard Moves
+					pass
+				3: # Attack Moves
+					cur_state.player_mp -= moving_AI.get_lethality(move_set_num,1)
+					var atk_grid = moving_AI.get_grid_atk(move_set_num)
+					if check_atk_distance(atk_grid):
+						cur_state.self_hp -= moving_AI.get_lethality(move_set_num)
+				_:
+					print('Unknown move type!')
+
 
 func prep_dets(dets, r, mn=-1, d=-1, possible=false):
 	if possible:
@@ -59,6 +106,9 @@ func prep_dets(dets, r, mn=-1, d=-1, possible=false):
 		print('Finished impossible state')
 		if d==3:
 			emit_signal("end_state")
+
+func set_heuristic_rule(h):
+	heuristic_rule = h
 
 func set_possible_state(t=false):
 	possible_state = t
@@ -90,9 +140,17 @@ func calculate_state():
 	print('Finished state')
 	emit_signal("end_state")
 
-func check_self_grid(dir):
-	var x = cur_state.self_pos_x
-	var y = cur_state.self_pos_y
+func check_grid(dir):
+	var x
+	var y
+	
+	if self_turn:
+		x = cur_state.self_pos_x
+		y = cur_state.self_pos_y
+	else:
+		x = cur_state.player_pos_x
+		y = cur_state.player_pos_y
+	
 	
 	match(dir):
 		0:
@@ -122,7 +180,39 @@ func check_self_grid(dir):
 		return false
 
 func check_atk_distance(grid):
-	pass
+#	var p_x = cur_state.player_pos_x
+#	var p_y = cur_state.player_pos_y
+#	var a_x = cur_state.self_pos_x
+#	var a_y = cur_state.self_pos_y
+	
+#	if self_turn:
+#		if grid[0][0]:
+#			if a_x-1 == p_x and a_y-1 == p_y: return true
+#		elif grid[0][1]:
+#			if a_x == p_x and a_y-1 == p_y: return true
+#		elif grid[0][2]:
+#			if a_x+1 == p_x and a_y-1 == p_y: return true
+#		elif grid[1][0]:
+#			if a_x-1 == p_x and a_y == p_y: return true
+#		elif grid[1][1]:
+	# completely forgot the existence of check_grid
+	
+	var hits = []
+	
+	if grid[0][0]: hits.append(check_grid(0))
+	if grid[0][1]: hits.append(check_grid(1))
+	if grid[0][2]: hits.append(check_grid(2))
+	if grid[1][0]: hits.append(check_grid(3))
+	if grid[1][1]: hits.append(check_grid(4))
+	if grid[1][2]: hits.append(check_grid(5))
+	if grid[2][0]: hits.append(check_grid(6))
+	if grid[2][1]: hits.append(check_grid(7))
+	if grid[2][2]: hits.append(check_grid(8))
+	
+	for hit in hits:
+		if hit == true: return true
+	
+	return false
 
 # Grabs manhattan distance of two points.
 func get_cur_distance():
