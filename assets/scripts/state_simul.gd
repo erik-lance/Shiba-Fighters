@@ -6,6 +6,9 @@ var root = null
 var heuristic_rule = null
 var moving_AI = null
 
+var player_AI = null
+var agent_AI = null
+
 var depth = -1
 
 var h_value = 0
@@ -76,6 +79,10 @@ func perform_move():
 						cur_state.self_hp -= moving_AI.get_lethality(move_set_num)
 				_:
 					print('Unknown move type!')
+	
+	# Since the state has been adjusted accordingly based on move,
+	# it is time to calculate the state's heuristics
+	calculate_state()
 
 
 func prep_dets(dets, r, mn=-1, d=-1, possible=false):
@@ -97,7 +104,7 @@ func prep_dets(dets, r, mn=-1, d=-1, possible=false):
 		if d == 3:
 			self.connect('end_state',root,'_on_finish_min_max_state')
 		
-		calculate_state()
+		perform_move()
 	else:
 		root = r
 		move_num = mn
@@ -124,8 +131,10 @@ func get_h_value():
 # ---------------- CALCULATION TOOLS ---------------- #
 # --------------------------------------------------- #
 func calculate_state():
+	var final_value = 0
 	# TODO: Add heuristic_rule properly soon	
-	
+	# Minimizer is Human
+	# Maximizer is Agent
 	
 	# Heuristic Rules
 	# Calculate Position based on dmg_proximity
@@ -136,15 +145,29 @@ func calculate_state():
 	# -----------------------------------------
 	# MinMax Final HP/MP based on raw number
 	
+	# Position calculation
+	final_value += agent_AI.get_proximity(find_opponent(true))
+	final_value -= player_AI.get_proximity(find_opponent(false))
+	
+	# Optionals (These mean POSSIBLE attacks or regen moves)
+	
+	
+	
+	# HP/MP Calculation
+	final_value -= cur_state.player_hp
+	final_value -= cur_state.player_mp
+	final_value += cur_state.self_hp
+	final_value += cur_state.self_mp
+	
 	
 	print('Finished state')
 	emit_signal("end_state")
 
-func check_grid(dir):
+func check_grid(dir, turn=self_turn):
 	var x
 	var y
 	
-	if self_turn:
+	if turn:
 		x = cur_state.self_pos_x
 		y = cur_state.self_pos_y
 	else:
@@ -178,6 +201,31 @@ func check_grid(dir):
 		return true
 	else:
 		return false
+
+func find_opponent(specific=-1):
+	if specific == -1:
+		if check_grid(0): return 0
+		if check_grid(1): return 1
+		if check_grid(2): return 2
+		if check_grid(3): return 3
+		if check_grid(4): return 4
+		if check_grid(5): return 5
+		if check_grid(6): return 6
+		if check_grid(7): return 7
+		if check_grid(8): return 8
+		return -1
+	else:
+		if check_grid(0, specific): return 0
+		if check_grid(1, specific): return 1
+		if check_grid(2, specific): return 2
+		if check_grid(3, specific): return 3
+		if check_grid(4, specific): return 4
+		if check_grid(5, specific): return 5
+		if check_grid(6, specific): return 6
+		if check_grid(7, specific): return 7
+		if check_grid(8, specific): return 8
+		return -1
+	
 
 func check_atk_distance(grid):
 #	var p_x = cur_state.player_pos_x
