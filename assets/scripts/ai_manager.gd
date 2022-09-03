@@ -3,22 +3,12 @@ extends Node2D
 signal finished_choosing(cards)
 
 onready var deck = $Deck
+onready var calculator = $Simulator
 
 var ai = null
 var player_deck = null
 
 var cur_state = {
-	player_pos_x = 0,
-	player_pos_y = 1,
-	self_pos_x = 7,
-	self_pos_y = 2,
-	player_hp = 100,
-	player_mp = 100,
-	self_hp = 100,
-	self_mp = 100
-}
-
-var pred_state = {
 	player_pos_x = 0,
 	player_pos_y = 1,
 	self_pos_x = 7,
