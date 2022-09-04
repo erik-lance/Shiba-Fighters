@@ -146,6 +146,7 @@ func set_h_value(h): h_value = h
 func get_h_value(): return h_value
 func get_move(): return move_num
 func get_state_parent(): return parent
+func get_state_children(): return children
 
 # --------------------------------------------------- #
 # ---------------- CALCULATION TOOLS ---------------- #
@@ -189,6 +190,10 @@ func calculate_state():
 	print('Finished state '+str(move_num)+' at '+str(depth)+'. H:'+str(final_value))
 	
 	# Keep producing states
+	# Adds as end_state to cluster if conditions met:
+	# - Game is over after performing move
+	# - Max depth reached
+	
 	if depth < DEPTH_SIZE-1 and not is_game_over():
 		if self_turn:
 			for i in agent_AI.get_deck_size():
