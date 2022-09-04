@@ -12,6 +12,7 @@ var moving_AI = null
 var player_AI = null
 var agent_AI = null
 
+const DEPTH_SIZE = 3
 var depth = 0
 
 var h_value = 0
@@ -188,7 +189,7 @@ func calculate_state():
 	print('Finished state '+str(move_num)+' at '+str(depth)+'. H:'+str(final_value))
 	
 	# Keep producing states
-	if depth < 2:
+	if depth < DEPTH_SIZE-1 and not is_game_over():
 		if self_turn:
 			for i in agent_AI.get_deck_size():
 				var new_state = load(state_link).instance()
