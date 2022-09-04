@@ -82,12 +82,15 @@ func new_state_cluster(start_dets,m,p=self,d=depth+1):
 	new_cluster.set_move(m)
 
 # Prepares a new move state in this direction
+# WILL PROBABLY ONLY BE USED ONCE FOR CLUSTERS
 func prep_state(dets, m=-1):
 	var new_state = load("res://scenes/state.tscn").instance()
 	add_child(new_state)
 	new_state.set_name('State '+states.size())
+	start_state = new_state
 	
-	states[cur_calc_state].prep_dets(dets, self,m)
+	start_state.prep_dets(dets, self,m)
+	#states[cur_calc_state].prep_dets(dets, self,m)
 	cur_calc_state += 1
 
 func begin_tree():
@@ -106,10 +109,29 @@ func alpha_beta_search(s):
 	pass
 
 func max_value(s, alpha, beta):
-	pass
+	if not s.is_move_playable(): return s.get_h_value()
+	
+	var maximizing_value = -INF
+	for a in s.get_state_children():
+		maximizing_value = max(maximizing_value,min_value(a,alpha,beta))
+		if maximizing_value >= beta: return maximizing_value
+		
+		alpha = max(alpha, maximizing_value)
+	
+	return maximizing_value
 
 func min_value(s, alpha, beta):
-	pass
+	if not s.is_move_playable(): return s.get_h_value()
+	
+	var minimizing_value = INF
+	for a in s.get_state_children():
+		minimizing_value = min(minimizing_value, max_value(a,alpha,beta))
+		if minimizing_value <= alpha: return minimizing_value
+		
+		beta = min(beta,minimizing_value)
+	
+	return minimizing_value
+
 
 
 
