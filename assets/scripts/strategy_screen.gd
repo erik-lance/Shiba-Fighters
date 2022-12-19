@@ -1,6 +1,6 @@
 extends Node2D
 
-signal begin()
+signal begin(cards)
 
 onready var deck = $CanvasLayer/TextureRect/DeckWrapper/DeckPadder/Deck
 onready var selection = $CanvasLayer/TextureRect/SetCardWrapper/SelectedCards
@@ -8,6 +8,12 @@ onready var card_wrapper = $CanvasLayer/TextureRect/CardDataWrapper
 var cur_card = null
 
 var card_selection = []
+
+var orig_hp = 0
+var orig_mp = 0
+
+var cur_hp = -1
+var cur_mp = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,7 +40,13 @@ func set_deck(cards):
 		
 		card_obj.connect("card_selected",self,"_on_Card_Selected")
 
+func prep_cur_stats(h,m):
+	orig_hp = h
+	orig_mp = m
+	cur_hp = h
+	cur_mp = m
 
+# Simply changes the text written on t he right.
 func _on_Card_Selected(ref):
 	card_wrapper.get_child(0).text = ref.get_card_name()
 	
@@ -51,7 +63,7 @@ func _on_AddCard_button_up():
 
 
 func _on_Start_button_up():
-	emit_signal("begin")
+	emit_signal("begin", card_selection)
 
 
 func _on_Remove_button_up():
