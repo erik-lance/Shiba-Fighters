@@ -15,12 +15,66 @@ var player_first = true
 var ai_human = null
 var ai_agent = null
 
+var root_state = null
+
+var depth_size = 6
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
 func prep_sim(dets):
 	cur_dets = dets
+
+func prepare_tree():
+	# Prepares a root node where depth is 0 and no move is done.
+	root_state = load(state_link).instance()
+	add_child(root_state)
+	root_state.prep_dets(cur_dets)
+	
+	# Prepare depth 1
+	prepare_children(root_state, true)
+	
+	var cur_depth = 1
+	
+	# Prepare depth 2+
+	# This is done by checking for children at depth X
+	# If no children found, expand.
+	for n in root_state.get_children():
+		n.prepare_children(n, false)
+	
+	# CONCERN: Check for non-existent groups
+	# uses node groups in godot
+	var cur_turn = true
+	while (cur_depth < depth_size-1):
+		for _node in get_tree().get_nodes_in_group("depth_"+str(cur_depth)):
+			_node.prepare_children(_node, cur_turn)
+		
+		cur_turn = !cur_turn
+
+func prepare_children(node, is_first_player):
+	if is_first_player:
+		for i in ai_human.get_deck_size():
+			var new_state = load(state_link).instance()
+			node.add_child(new_state)
+			
+			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
+			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node)
+	else:
+		for i in ai_agent.get_deck_size():
+			var new_state = load(state_link).instance()
+			node.add_child(new_state)
+			
+			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
+			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node)
+
+# Cleans the node groups made from depths
+func clean_node_groups():
+	var cur_depth = 1
+	while (cur_depth < depth_size-1):
+		var group_name = "depth_"+str(cur_depth)
+		for _node in get_tree().get_nodes_in_group(group_name):
+				_node.remove_from_group(group_name)
 
 # Prepares a cluster state to calculate states
 # @start_state - state to branch out off

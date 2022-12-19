@@ -85,10 +85,8 @@ func perform_move():
 	# it is time to calculate the state's heuristics
 	calculate_state()
 
-func prep_dets(dets, r, mn=-1, d=0, parent=null):
+func prep_dets(dets, mn=-1, d=0, parent=null):
 	self.connect('end_state',cluster,'_on_finish_end_state')
-
-	cluster = r
 	self.parent = parent
 	
 	cur_state.player_pos_x = dets.player_pos_x
@@ -102,6 +100,8 @@ func prep_dets(dets, r, mn=-1, d=0, parent=null):
 	
 	move_num = mn
 	depth = d
+	
+	add_to_group("depth_"+str(d))
 	
 	# Adds the AI unto the state by grabbing it from
 	# the state_cluster.
@@ -145,6 +145,8 @@ func set_h_value(h): h_value = h
 
 func get_h_value(): return h_value
 func get_move(): return move_num
+func get_dets(): return cur_state
+func get_depth(): return depth
 func get_state_parent(): return parent
 func get_state_children(): return children
 
@@ -194,23 +196,23 @@ func calculate_state():
 	# - Game is over after performing move
 	# - Max depth reached
 	
-	if depth < DEPTH_SIZE-1 and not is_game_over():
-		if self_turn:
-			for i in agent_AI.get_deck_size():
-				var new_state = load(state_link).instance()
-				cluster.add_child(new_state)
-				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
-		else:
-			for i in player_AI.get_deck_size():
-				var new_state = load(state_link).instance()
-				cluster.add_child(new_state)
-				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
-	else:
-		# We send this end_state to the cluster to choose which is
-		# the highest end_state amongst all the end states. We find
-		# their grandparent to choose which route and affix the 3
-		# states accordingly
-		emit_signal("end_state", self)
+#	if depth < DEPTH_SIZE-1 and not is_game_over():
+#		if self_turn:
+#			for i in agent_AI.get_deck_size():
+#				var new_state = load(state_link).instance()
+#				cluster.add_child(new_state)
+#				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
+#		else:
+#			for i in player_AI.get_deck_size():
+#				var new_state = load(state_link).instance()
+#				cluster.add_child(new_state)
+#				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
+#	else:
+#		# We send this end_state to the cluster to choose which is
+#		# the highest end_state amongst all the end states. We find
+#		# their grandparent to choose which route and affix the 3
+#		# states accordingly
+#		emit_signal("end_state", self)
 
 func check_grid(dir, turn=self_turn):
 	var x
