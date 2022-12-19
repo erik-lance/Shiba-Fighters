@@ -29,7 +29,8 @@ func _ready():
 
 # Starting call to arena scene.
 func load_arena():
-	if self.get_child(3).name == "Scenario":
+	
+	if self.get_child_count() == 4 and self.get_child(3).name == "Scenario":
 		load_scenario(self.get_child(3))
 	else:
 		print("No scenario found. Loading tester...")
