@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/scripts/scenario.gd" type="Script" id=1]
+
+[node name="Scenario" type="Node2D"]
+script = ExtResource( 1 )
+fighter_1 = "res://scenes/arena/fighters/shiba.tscn"
+fighter_2 = "res://scenes/arena/fighters/shiba.tscn"
+map_x = 4
+map_y = 3

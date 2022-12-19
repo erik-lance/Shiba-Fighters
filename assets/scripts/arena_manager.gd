@@ -27,6 +27,21 @@ var arena_size = {
 func _ready():
 	pass
 
+# Starting call to arena scene.
+func load_arena():
+	if self.get_child(3).name == "Scenario":
+		load_scenario(self.get_child(3))
+	else:
+		print("No scenario found. Loading tester...")
+		prepare_tester()
+
+# Loads arena based on scenario provided.
+func load_scenario(scenario):
+	prepare_arena()
+	prepare_fighter(0, scenario.get_fighter_1)
+	prepare_fighter(1, scenario.get_fighter_2)
+	_on_loaded_arena()
+
 func prepare_tester():
 	prepare_arena()
 	prepare_fighter(0)
