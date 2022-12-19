@@ -9,6 +9,7 @@ mana = 15
 card_name = "Regen mana"
 card_desc = "Regenerates mana for the unit"
 anim_name = "regen_mana"
+type = "Regen"
 
 [node name="Mana" parent="CardData" index="2"]
 mid_center = true

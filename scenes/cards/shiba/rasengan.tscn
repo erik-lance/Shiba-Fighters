@@ -10,6 +10,7 @@ mana = 45
 card_name = "Rasengan"
 card_desc = "Deals a strong close-ranged attack that utilizes a spinning ball of mana"
 anim_name = "rasengan"
+type = "Attack"
 
 [node name="Damage" parent="CardData" index="1"]
 mid_left = true

@@ -10,6 +10,7 @@ mana = 45
 card_name = "Bamboom"
 card_desc = "Creates a devastating blow from a bamboo tree falling over"
 anim_name = "bamboom"
+type = "Attack"
 
 [node name="Damage" parent="CardData" index="1"]
 top_center = true

@@ -10,6 +10,7 @@ mana = 15
 card_name = "Senpu"
 card_desc = "The shiba spins to summon a hurricane around the area"
 anim_name = "spin"
+type = "Attack"
 
 [node name="Damage" parent="CardData" index="1"]
 top_left = true
