@@ -12,7 +12,7 @@ var moving_AI = null
 var player_AI = null
 var agent_AI = null
 
-const DEPTH_SIZE = 3
+const DEPTH_SIZE = 6
 var depth = 0
 
 var h_value = 0

@@ -104,8 +104,16 @@ func _on_finish_end_state(state):
 func get_heuristic_value(): return h_value
 
 # ALPHA-BETA MINIMAX PRUNING
+# Find the state sequence	
+
+
+# UPDATE, ALPHA BETA ONLY FOR SIMULATOR
+# DONT USE ALPHA BETA HERE
+# ONLY GRAB THE BEST OF EACH DEPTH
 func alpha_beta_search(s):
 	var v = max_value(s,-INF,INF)
+	
+	
 	pass
 
 func max_value(s, alpha, beta):
@@ -114,6 +122,12 @@ func max_value(s, alpha, beta):
 	var maximizing_value = -INF
 	for a in s.get_state_children():
 		maximizing_value = max(maximizing_value,min_value(a,alpha,beta))
+		
+		
+		# This is so that the value updates all the way to the parent to choose the best route
+		# Kaso we want the to grab the individual states right(?)
+		# s.set_h_value(maximizing_value)
+		
 		if maximizing_value >= beta: return maximizing_value
 		
 		alpha = max(alpha, maximizing_value)
