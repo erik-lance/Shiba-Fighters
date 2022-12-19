@@ -101,8 +101,51 @@ func alpha_beta_search(s):
 	var v = max_value(s,-9999,9999)
 
 func max_value(s,alpha,beta):
-	pass
+	# Static evaluation of state
+	if(s.is_move_playable()):
+		var state_h_value = s.calculate_state()
+		s.set_h_value(state_h_value)
+		return state_h_value
+#	elif(s.is_agent_win()):
+#		var state_h_value = s.calculate_state()+9999
+#		s.set_h_value(state_h_value)
+#		return state_h_value
+		
+#	if not s.is_move_playable(): return s.get_h_value()
 	
+	var maximizing_value = -INF
+	for a in s.get_state_children():
+		maximizing_value = max(maximizing_value,min_value(a,alpha,beta))
+		
+		
+		# This is so that the value updates all the way to the parent to choose the best route
+		# Kaso we want the to grab the individual states right(?)
+		
+		# by doign this override, we can get the best state from navigating.
+		s.set_h_value(maximizing_value)
+		
+		if maximizing_value >= beta: return maximizing_value
+		
+		alpha = max(alpha, maximizing_value)
+	
+	return maximizing_value
+
+func min_value(s, alpha, beta):
+	# Static evaluation of state
+	if(s.is_move_playable()):
+		var state_h_value = s.calculate_state()
+		s.set_h_value(state_h_value)
+		return state_h_value
+	
+	
+	var minimizing_value = INF
+	for a in s.get_state_children():
+		minimizing_value = min(minimizing_value, max_value(a,alpha,beta))
+		if minimizing_value <= alpha: return minimizing_value
+		
+		beta = min(beta,minimizing_value)
+	
+	return minimizing_value
 
 # Feed Link
 func load_ai(h="res://scenes/arena/ai/shiba_ai.tscn",a="res://scenes/arena/ai/shiba_ai.tscn"):

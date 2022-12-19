@@ -83,7 +83,7 @@ func perform_move():
 	
 	# Since the state has been adjusted accordingly based on move,
 	# it is time to calculate the state's heuristics
-	calculate_state()
+#	calculate_state()
 
 func prep_dets(dets, mn=-1, d=0, parent=null):
 	self.connect('end_state',cluster,'_on_finish_end_state')
@@ -101,8 +101,6 @@ func prep_dets(dets, mn=-1, d=0, parent=null):
 	move_num = mn
 	depth = d
 	
-	add_to_group("depth_"+str(d))
-	
 	# Adds the AI unto the state by grabbing it from
 	# the state_cluster.
 	player_AI = cluster.get_human_ai()
@@ -115,6 +113,7 @@ func prep_dets(dets, mn=-1, d=0, parent=null):
 	# if the move can actually be performed in order
 	# to avoid redundancy.
 	if is_move_playable():
+		add_to_group("depth_"+str(d))
 		parent.add_child_state(self)
 		perform_move()
 	else:
@@ -124,7 +123,19 @@ func prep_dets(dets, mn=-1, d=0, parent=null):
 # Simply checks if out of HP
 func is_game_over():
 	if cur_state.self_hp <= 0 or cur_state.player_hp <= 0:
-		return false
+		return true
+	return false
+
+func is_player_win():
+	if cur_state.player_hp <= 0 and cur_state.self_hp > 0:
+		return true
+	return false
+
+func is_agent_win():
+	if cur_state.player_hp > 0 and cur_state.self_hp <= 0:
+		return true
+	return false
+
 
 # Checks current move and self_turn
 func is_move_playable():
@@ -187,32 +198,14 @@ func calculate_state():
 	final_value += cur_state.self_hp*2
 	final_value += cur_state.self_mp
 	
-	set_h_value(final_value)
+	# Game over
+	if cur_state.player_hp <= 0: final_value = INF
+	elif cur_state.self_hp <= 0: final_value = -INF
+	
+	return final_value
 	
 	print('Finished state '+str(move_num)+' at '+str(depth)+'. H:'+str(final_value))
-	
-	# Keep producing states
-	# Adds as end_state to cluster if conditions met:
-	# - Game is over after performing move
-	# - Max depth reached
-	
-#	if depth < DEPTH_SIZE-1 and not is_game_over():
-#		if self_turn:
-#			for i in agent_AI.get_deck_size():
-#				var new_state = load(state_link).instance()
-#				cluster.add_child(new_state)
-#				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
-#		else:
-#			for i in player_AI.get_deck_size():
-#				var new_state = load(state_link).instance()
-#				cluster.add_child(new_state)
-#				new_state.prep_dets(cur_state,cluster,i,depth+1,self)
-#	else:
-#		# We send this end_state to the cluster to choose which is
-#		# the highest end_state amongst all the end states. We find
-#		# their grandparent to choose which route and affix the 3
-#		# states accordingly
-#		emit_signal("end_state", self)
+
 
 func check_grid(dir, turn=self_turn):
 	var x
