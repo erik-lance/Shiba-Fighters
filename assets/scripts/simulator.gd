@@ -15,9 +15,14 @@ var player_first = true
 var ai_human = null
 var ai_agent = null
 
+var first_player = null
+var second_player = null
+
 var root_state = null
 
 var depth_size = 6
+
+var is_ai_first_card = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,12 +45,12 @@ func prepare_tree():
 	# Prepare depth 2+
 	# This is done by checking for children at depth X
 	# If no children found, expand.
-	for n in root_state.get_children():
-		n.prepare_children(n, false)
+#	for n in root_state.get_children():
+#		n.prepare_children(n, false)
 	
 	# CONCERN: Check for non-existent groups
 	# uses node groups in godot
-	var cur_turn = true
+	var cur_turn = false
 	while (cur_depth < depth_size-1):
 		for _node in get_tree().get_nodes_in_group("depth_"+str(cur_depth)):
 			_node.prepare_children(_node, cur_turn)
@@ -53,20 +58,24 @@ func prepare_tree():
 		cur_turn = !cur_turn
 
 func prepare_children(node, is_first_player):
+	# We append is_ai_first card because if it's true, and it's first player, it plays as normal.
+	# if it's false and first player, it reveals the human is the first player and it's not their
+	# turn yet.
+	
 	if is_first_player:
-		for i in ai_human.get_deck_size():
+		for i in first_player.get_deck_size():
 			var new_state = load(state_link).instance()
 			node.add_child(new_state)
 			
 			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
-			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node)
+			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, is_ai_first_card)
 	else:
-		for i in ai_agent.get_deck_size():
+		for i in second_player.get_deck_size():
 			var new_state = load(state_link).instance()
 			node.add_child(new_state)
 			
 			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
-			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node)
+			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, !is_ai_first_card)
 
 # Cleans the node groups made from depths
 func clean_node_groups():
@@ -80,7 +89,16 @@ func clean_node_groups():
 # $SelectedCluster and then delete all other state clusters.
 # We only need the top most state cluster to grabe the 3 state sequence
 func alpha_beta_search(s):
-	var v = max_value(s,-9999,9999)
+	# Will contain state path of best path
+	var walk = []
+	
+	var a = -INF
+	var b = INF
+	
+	# Evaluates the utility
+	var v = max_value(s,a,b)
+	
+	
 
 func max_value(s,alpha,beta):
 	# Static evaluation of state
@@ -133,6 +151,23 @@ func load_ai(h="res://scenes/arena/ai/shiba_ai.tscn",a="res://scenes/arena/ai/sh
 	
 	ai_human = ai_h
 	ai_agent = ai_a
+
+func get_human_ai(): return ai_human
+func get_agent_ai(): return ai_agent
+func get_first_player(): return first_player
+func get_second_player(): return second_player
+
+func get_root(): return root_state
+
+func set_human_first():
+	first_player = ai_human
+	second_player = ai_agent
+	is_ai_first_card = false
+
+func set_agent_first():
+	first_player = ai_agent
+	second_player = ai_human
+	is_ai_first_card = true
 
 func _on_finish_cluster_tree(val):
 	if cur_calc_state < ai_human.get_deck_size():

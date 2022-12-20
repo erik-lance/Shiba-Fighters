@@ -84,8 +84,8 @@ func perform_move():
 	# it is time to calculate the state's heuristics
 #	calculate_state()
 
-func prep_dets(dets, mn=-1, d=0, parent=null):
-	self.connect('end_state',cluster,'_on_finish_end_state')
+func prep_dets(dets, mn=-1, d=0, parent=null, turn=false):
+#	self.connect('end_state',cluster,'_on_finish_end_state')
 	self.parent = parent
 	
 	cur_state.player_pos_x = dets.player_pos_x
@@ -99,14 +99,23 @@ func prep_dets(dets, mn=-1, d=0, parent=null):
 	
 	move_num = mn
 	depth = d
+	self.self_turn = turn
 	
 	# Adds the AI unto the state by grabbing it from
 	# the state_cluster.
-	player_AI = cluster.get_human_ai()
-	agent_AI = cluster.get_agent_ai()
+	player_AI = parent.get_human_ai()
+	agent_AI = parent.get_agent_ai()
 	
-	if depth % 2 == 0: moving_AI = player_AI
-	else: moving_AI = agent_AI
+	# actually, I don't t hink depth matters.
+#	if self_turn:
+#		if depth % 2 != 0: moving_AI = agent_AI
+#		else: moving_AI = player_AI
+#	else:
+#		if depth % 2 == 0: moving_AI = player_AI
+#		else: moving_AI = agent_AI
+	
+	if self_turn: moving_AI = agent_AI
+	else: moving_AI = player_AI
 	
 	# We add them as a child of the parent state only
 	# if the move can actually be performed in order
@@ -159,6 +168,9 @@ func get_dets(): return cur_state
 func get_depth(): return depth
 func get_state_parent(): return parent
 func get_state_children(): return children
+
+func get_human_ai(): return player_AI
+func get_agent_ai(): return agent_AI
 
 # --------------------------------------------------- #
 # ---------------- CALCULATION TOOLS ---------------- #
