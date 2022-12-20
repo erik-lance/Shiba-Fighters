@@ -106,14 +106,6 @@ func prep_dets(dets, mn=-1, d=0, parent=null, turn=false):
 	player_AI = parent.get_human_ai()
 	agent_AI = parent.get_agent_ai()
 	
-	# actually, I don't t hink depth matters.
-#	if self_turn:
-#		if depth % 2 != 0: moving_AI = agent_AI
-#		else: moving_AI = player_AI
-#	else:
-#		if depth % 2 == 0: moving_AI = player_AI
-#		else: moving_AI = agent_AI
-	
 	if self_turn: moving_AI = agent_AI
 	else: moving_AI = player_AI
 	

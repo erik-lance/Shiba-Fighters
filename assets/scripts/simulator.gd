@@ -90,15 +90,51 @@ func clean_node_groups():
 # We only need the top most state cluster to grabe the 3 state sequence
 func alpha_beta_search(s):
 	# Will contain state path of best path
-	var walk = []
+	var walk_path = []
 	
 	var a = -INF
 	var b = INF
 	
 	# Evaluates the utility
-	var v = max_value(s,a,b)
+	var v = 0
 	
+	# Since AI is the maximizer and player is the minimizer, it has to adjust accordingly.
+	if is_ai_first_card:
+		v = min_value(s,a,b)
+	else:
+		v = max_value(s,a,b)
 	
+	walk_path.append(root_state)
+	var cur_depth = 1
+	while (true):
+		# Grabs last element
+		var cur_search = walk_path.back()
+		if cur_search.child_count() <= 0: break
+		
+		var best_node = null
+		var best_val = 0
+		
+		var is_ai_turn = false
+		if is_ai_first_card:
+			if cur_depth % 2 != 0: is_ai_turn = true
+			else: is_ai_turn = false
+		else:
+			if cur_depth % 2 == 0: is_ai_turn = false
+			else: is_ai_turn = true
+		
+		for child_state in cur_search.get_state_children():
+			if is_ai_turn: # Maximize
+				child_state.get_h_value() > best_val
+				best_node = child_state
+				best_val = child_state.get_h_value()
+			else: # Minimize
+				child_state.get_h_value() < best_val
+				best_node = child_state
+				best_val = child_state.get_h_value()
+		
+		walk_path.append(best_node)
+	
+	return walk_path
 
 func max_value(s,alpha,beta):
 	# Static evaluation of state
