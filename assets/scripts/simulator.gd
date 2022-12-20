@@ -35,7 +35,7 @@ func prepare_tree():
 	# Prepares a root node where depth is 0 and no move is done.
 	root_state = load(state_link).instance()
 	add_child(root_state)
-	root_state.prep_dets(cur_dets)
+	root_state.prep_dets(cur_dets, -1, 0, self)
 	
 	# Prepare depth 1
 	prepare_children(root_state, true)

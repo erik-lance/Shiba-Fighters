@@ -9,6 +9,9 @@ var ai = null
 var player_deck = null
 var root_state = null
 
+var human_ai = null
+var agent_ai = null
+
 var cur_state = {
 	player_pos_x = 0,
 	player_pos_y = 1,
@@ -23,6 +26,8 @@ var cur_state = {
 var is_ai_first = false
 var ai_move_sequence = []
 
+var player_prediction = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -30,21 +35,28 @@ func _ready():
 func set_cur_state(s):
 	cur_state = s
 
-func prepare_ai(d, a):
-	player_deck = d
-	var bot = load(a).instance()
-	ai.add_child(bot)
-	ai = bot
+func prepare_ai(h, a):
+#	player_deck = d
+#	var bot = load(a).instance()
+#	ai.add_child(bot)
+#	ai = bot
+	human_ai = h
+	agent_ai = a
 
 # Consider, AI has to choose 3 cards even if lose early.
 func decide_cards():
 	calculator.prep_sim(cur_state)
-	# Fix this once sure na who goes first
-	calculator.set_human_first()
-#	calculator.set_agent_first()
-	calculator.prepare_tree()
 	
+	# Add human and agent ai once final
+	calculator.load_ai()
+	
+	# Fix this once sure na who goes first
+	if is_ai_first: calculator.set_agent_first()
+	else: calculator.set_human_first()
+	
+	calculator.prepare_tree()
 	root_state = calculator.get_root()
+	
 	var path = calculator.alpha_beta_search(root_state)
 	var human_prediction = []
 	var agent_prediction = []
@@ -69,5 +81,11 @@ func decide_cards():
 	root_state.queue_free()
 	
 	ai_move_sequence = agent_prediction
+	player_prediction = human_prediction
 
+func set_human_first(): is_ai_first = false
+func set_agent_first(): is_ai_first = true
+
+func get_moves_human(): return player_prediction
+func get_moves_agent(): return ai_move_sequence
 
