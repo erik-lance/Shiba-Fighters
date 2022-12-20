@@ -37,6 +37,7 @@ func _ready():
 
 # ALWAYS ASSUME EVERY MOVE IS POSSIBLE BEFORE REACHING HERE
 func perform_move():
+	print("Depth: "+str(depth)+ " Let's perform a move!: "+str(self_turn) + " with move num: "+str(move_num))
 	if self_turn:
 		var move_set_num = move_num - moving_AI.get_move_type_bounds(moving_AI.get_move_type(move_num))
 		match(moving_AI.get_move_type(move_num)):
@@ -156,7 +157,7 @@ func set_h_value(h): h_value = h
 
 func get_h_value(): return h_value
 func get_move(): return move_num
-func get_dets(): return cur_state
+func get_cur_dets(): return cur_state
 func get_depth(): return depth
 func get_state_parent(): return parent
 func get_state_children(): return children
@@ -275,16 +276,17 @@ func find_opponent(specific=-1):
 # Note: only checks for own turn
 func check_atk_distance(grid):
 	var hits = []
-	
-	if grid[0][0]: hits.append(check_grid(0))
-	if grid[0][1]: hits.append(check_grid(1))
-	if grid[0][2]: hits.append(check_grid(2))
-	if grid[1][0]: hits.append(check_grid(3))
-	if grid[1][1]: hits.append(check_grid(4))
-	if grid[1][2]: hits.append(check_grid(5))
-	if grid[2][0]: hits.append(check_grid(6))
-	if grid[2][1]: hits.append(check_grid(7))
-	if grid[2][2]: hits.append(check_grid(8))
+#	print("GRID: ")
+#	print(grid)
+	if grid[0]: hits.append(check_grid(0))
+	if grid[1]: hits.append(check_grid(1))
+	if grid[2]: hits.append(check_grid(2))
+	if grid[3]: hits.append(check_grid(3))
+	if grid[4]: hits.append(check_grid(4))
+	if grid[5]: hits.append(check_grid(5))
+	if grid[6]: hits.append(check_grid(6))
+	if grid[7]: hits.append(check_grid(7))
+	if grid[8]: hits.append(check_grid(8))
 	
 	for hit in hits:
 		if hit == true: return true

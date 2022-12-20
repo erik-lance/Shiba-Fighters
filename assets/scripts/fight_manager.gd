@@ -20,6 +20,17 @@ var fighter = {
 	enemy = null
 }
 
+var cur_state = {
+	player_pos_x = 0,
+	player_pos_y = 1,
+	self_pos_x = 7,
+	self_pos_y = 2,
+	player_hp = 100,
+	player_mp = 100,
+	self_hp = 100,
+	self_mp = 100
+}
+
 var player_hp = 0
 var player_mp = 0
 var enemy_hp = 0
@@ -42,6 +53,7 @@ func _on_arena_loaded(player,enemy):
 	fighter.enemy = enemy
 	print('Arena has successfully loaded!')
 	
+	ai_manager.set_cur_state(cur_state)
 #	ai_manager.prepare_ai()
 	ai_manager.decide_cards()
 	print("Cards have been decided")

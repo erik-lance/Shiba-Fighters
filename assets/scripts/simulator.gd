@@ -53,9 +53,10 @@ func prepare_tree():
 	var cur_turn = false
 	while (cur_depth < depth_size-1):
 		for _node in get_tree().get_nodes_in_group("depth_"+str(cur_depth)):
-			_node.prepare_children(_node, cur_turn)
+			prepare_children(_node, cur_turn)
 		
 		cur_turn = !cur_turn
+		cur_depth += 1
 
 func prepare_children(node, is_first_player):
 	# We append is_ai_first card because if it's true, and it's first player, it plays as normal.
@@ -66,7 +67,6 @@ func prepare_children(node, is_first_player):
 		for i in first_player.get_deck_size():
 			var new_state = load(state_link).instance()
 			node.add_child(new_state)
-			
 			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
 			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, is_ai_first_card)
 	else:
@@ -193,6 +193,7 @@ func get_first_player(): return first_player
 func get_second_player(): return second_player
 
 func get_root(): return root_state
+func get_cur_dets(): return cur_dets
 
 func set_human_first():
 	first_player = ai_human
