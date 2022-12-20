@@ -85,9 +85,8 @@ func clean_node_groups():
 		for _node in get_tree().get_nodes_in_group(group_name):
 				_node.remove_from_group(group_name)
 
-# When you found the best heuristic, move the state cluster to
-# $SelectedCluster and then delete all other state clusters.
-# We only need the top most state cluster to grabe the 3 state sequence
+# Searches the whole tree. Once finished, creates a walk to the path
+# and returns the array walk_path in order from root to last node to reach.
 func alpha_beta_search(s):
 	# Will contain state path of best path
 	var walk_path = []
