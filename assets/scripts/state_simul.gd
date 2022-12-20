@@ -5,7 +5,6 @@ signal end_state(state)
 var parent = null
 var children = []
 
-var cluster = null
 var heuristic_rule = null
 
 var moving_AI = null
@@ -269,24 +268,8 @@ func find_opponent(specific=-1):
 		if check_grid(8, specific): return 8
 	return -1
 
+# Note: only checks for own turn
 func check_atk_distance(grid):
-#	var p_x = cur_state.player_pos_x
-#	var p_y = cur_state.player_pos_y
-#	var a_x = cur_state.self_pos_x
-#	var a_y = cur_state.self_pos_y
-	
-#	if self_turn:
-#		if grid[0][0]:
-#			if a_x-1 == p_x and a_y-1 == p_y: return true
-#		elif grid[0][1]:
-#			if a_x == p_x and a_y-1 == p_y: return true
-#		elif grid[0][2]:
-#			if a_x+1 == p_x and a_y-1 == p_y: return true
-#		elif grid[1][0]:
-#			if a_x-1 == p_x and a_y == p_y: return true
-#		elif grid[1][1]:
-	# completely forgot the existence of check_grid
-	
 	var hits = []
 	
 	if grid[0][0]: hits.append(check_grid(0))

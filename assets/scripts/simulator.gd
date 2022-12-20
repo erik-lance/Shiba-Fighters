@@ -76,24 +76,6 @@ func clean_node_groups():
 		for _node in get_tree().get_nodes_in_group(group_name):
 				_node.remove_from_group(group_name)
 
-# Prepares a cluster state to calculate states
-# @start_state - state to branch out off
-# @m - move
-# @p - parent
-# @d - depth
-func prep_state_cluster(start_state,m,p=self,d=0):
-	var new_cluster = load("res://scenes/state_cluster.tscn").instance()
-	add_child(new_cluster)
-	state.append(new_cluster)
-	
-	new_cluster.set_parent(p)
-	new_cluster.set_depth(d)
-	new_cluster.set_move(cur_calc_state)
-	new_cluster.set_start_state(cur_dets)
-	new_cluster.load_ai()
-	
-	cur_calc_state += 1
-
 # When you found the best heuristic, move the state cluster to
 # $SelectedCluster and then delete all other state clusters.
 # We only need the top most state cluster to grabe the 3 state sequence
@@ -106,21 +88,13 @@ func max_value(s,alpha,beta):
 		var state_h_value = s.calculate_state()
 		s.set_h_value(state_h_value)
 		return state_h_value
-#	elif(s.is_agent_win()):
-#		var state_h_value = s.calculate_state()+9999
-#		s.set_h_value(state_h_value)
-#		return state_h_value
-		
-#	if not s.is_move_playable(): return s.get_h_value()
+	else:
+		print("Reached immovable state?")
 	
 	var maximizing_value = -INF
 	for a in s.get_state_children():
 		maximizing_value = max(maximizing_value,min_value(a,alpha,beta))
-		
-		
-		# This is so that the value updates all the way to the parent to choose the best route
-		# Kaso we want the to grab the individual states right(?)
-		
+
 		# by doign this override, we can get the best state from navigating.
 		s.set_h_value(maximizing_value)
 		
@@ -136,6 +110,8 @@ func min_value(s, alpha, beta):
 		var state_h_value = s.calculate_state()
 		s.set_h_value(state_h_value)
 		return state_h_value
+	else:
+		print("Reached immovable state for minimizer!")
 	
 	
 	var minimizing_value = INF
