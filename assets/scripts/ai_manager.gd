@@ -17,8 +17,12 @@ var cur_state = {
 	player_pos_y = 1,
 	self_pos_x = 7,
 	self_pos_y = 2,
+	player_max_hp = 100,
+	player_max_mp = 100,
 	player_hp = 100,
 	player_mp = 100,
+	self_max_hp = 100,
+	self_max_mp = 100,
 	self_hp = 100,
 	self_mp = 100
 }
@@ -62,7 +66,11 @@ func decide_cards():
 	var agent_prediction = []
 	
 	var depth = 0
+	print("Fix predictions")
 	for state in path:
+		print("Fixing cur state")
+		print(state)
+		
 		if depth==0: 
 			depth += 1
 			continue
@@ -75,11 +83,12 @@ func decide_cards():
 			else: agent_prediction.append(state.get_move())
 		
 		depth += 1
-	
+	print("Finished predictions")
 	# Clean up
 	calculator.clean_node_groups()
 	root_state.queue_free()
 	
+	print("Set predictions")
 	ai_move_sequence = agent_prediction
 	player_prediction = human_prediction
 

@@ -25,10 +25,16 @@ var cur_state = {
 	player_pos_y = 1,
 	self_pos_x = 7,
 	self_pos_y = 2,
+	player_max_hp = 100,
+	player_max_mp = 100,
 	player_hp = 100,
 	player_mp = 100,
+	self_max_hp = 100,
+	self_max_mp = 100,
 	self_hp = 100,
-	self_mp = 100
+	self_mp = 100,
+	arena_x = 7,
+	arena_y = 2
 }
 
 var player_hp = 0

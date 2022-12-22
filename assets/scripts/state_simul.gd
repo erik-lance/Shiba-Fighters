@@ -25,10 +25,16 @@ var cur_state = {
 	player_pos_y = 0,
 	self_pos_x = 0,
 	self_pos_y = 0,
+	player_max_hp = 0,
+	player_max_mp = 0,
 	player_hp = 0,
 	player_mp = 0,
+	self_max_hp = 0,
+	self_max_mp = 0,
 	self_hp = 0,
-	self_mp = 0
+	self_mp = 0,
+	arena_x = 0,
+	arena_y = 0
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -48,8 +54,20 @@ func perform_move():
 					2: cur_state.self_pos_x -= moving_AI.get_move_dist(move_num)
 					3: cur_state.self_pos_x += moving_AI.get_move_dist(move_num)
 					_: print('Invalid state move distance')
+				
+				if cur_state.self_pos_x < 0:
+					cur_state.self_pos_x = 0
+				elif cur_state.self_pos_x > cur_state.arena_x:
+					cur_state.self_pos_x  = cur_state.arena_x
+				elif cur_state.self_pos_y < 0:
+					cur_state.self_pos_y = 0
+				elif cur_state.self_pos_y > cur_state.arena_y:
+					cur_state.self_pos_y = cur_state.arena_y
+				
 			1: # Regen Moves
 				cur_state.self_mp += moving_AI.get_regen(move_set_num,1)
+				if cur_state.self_mp > cur_state.self_max_mp:
+					cur_state.self_mp = cur_state.self_max_mp
 			2: # Guard Moves
 				pass
 			3: # Attack Moves
@@ -69,8 +87,20 @@ func perform_move():
 					2: cur_state.player_pos_x -= moving_AI.get_move_dist(move_num)
 					3: cur_state.player_pos_x += moving_AI.get_move_dist(move_num)
 					_: print('Invalid state move distance')
+				
+				if cur_state.player_pos_x < 0:
+					cur_state.player_pos_x = 0
+				elif cur_state.player_pos_x > cur_state.arena_x:
+					cur_state.player_pos_x  = cur_state.arena_x
+				elif cur_state.player_pos_y < 0:
+					cur_state.player_pos_y = 0
+				elif cur_state.player_pos_y > cur_state.arena_y:
+					cur_state.player_pos_y = cur_state.arena_y
+				
 			1: # Regen Moves
 				cur_state.player_mp += moving_AI.get_regen(move_set_num,1)
+				if cur_state.player_mp > cur_state.player_max_mp:
+					cur_state.player_mp = cur_state.player_max_mp
 			2: # Guard Moves
 				pass
 			3: # Attack Moves
@@ -94,10 +124,16 @@ func prep_dets(dets, mn=-1, d=0, parent=null, turn=false):
 	cur_state.player_pos_y = dets.player_pos_y
 	cur_state.self_pos_x = dets.self_pos_x
 	cur_state.self_pos_y = dets.self_pos_y
+	cur_state.player_max_hp = dets.player_max_hp
+	cur_state.player_max_mp = dets.player_max_mp
 	cur_state.player_hp = dets.player_hp
 	cur_state.player_mp = dets.player_mp
+	cur_state.self_max_hp = dets.self_max_hp
+	cur_state.self_max_mp = dets.self_max_mp
 	cur_state.self_hp = dets.self_hp
 	cur_state.self_mp = dets.self_mp
+	cur_state.arena_x = dets.arena_x
+	cur_state.arena_y = dets.arena_y
 	
 	move_num = mn
 	depth = d
@@ -224,7 +260,7 @@ func check_grid(dir, turn=self_turn):
 	var atk_x = 0
 	var atk_y = 0
 	
-	if turn:
+	if !turn:
 		x = cur_state.self_pos_x
 		y = cur_state.self_pos_y
 		

@@ -76,6 +76,7 @@ func prepare_children(node, is_first_player):
 		if is_ai_first_card: card_owner = false
 		else: card_owner = true
 	
+	
 	var best_child = null
 	var best_val = 0
 	
@@ -129,6 +130,8 @@ func clean_node_groups():
 		var group_name = "depth_"+str(cur_depth)
 		for _node in get_tree().get_nodes_in_group(group_name):
 				_node.remove_from_group(group_name)
+		
+		cur_depth += 1
 
 # Searches the whole tree. Once finished, creates a walk to the path
 # and returns the array walk_path in order from root to last node to reach.
@@ -186,6 +189,9 @@ func alpha_beta_search(s):
 	print(walk_path)
 	for node in walk_path:
 		print(str(node.get_depth()) + ": Move: " +str(node.get_move()) +"  H: "+ str(node.get_h_value()) )
+		print(node.get_cur_dets())
+	
+	print("Walking finished.")
 	return walk_path
 
 func max_value(s,alpha,beta):
@@ -241,6 +247,10 @@ func min_value(s, alpha, beta):
 	var minimizing_value = INF
 	for a in s.get_state_children():
 		minimizing_value = min(minimizing_value, max_value(a,alpha,beta))
+		
+		# by doign this override, we can get the best state from navigating.
+		s.set_h_value(minimizing_value)
+		
 		if minimizing_value <= alpha: return minimizing_value
 		
 		beta = min(beta,minimizing_value)
