@@ -1,5 +1,7 @@
 extends Node2D
 
+const DECK_SIZE = 12
+func get_deck_size(): return DECK_SIZE
 
 # We will use a weight based system to calculate the heuristics
 # Call a certain function to increase heuristics on a certain set of moves
@@ -39,21 +41,32 @@ var attacks_cost = {
 }
 
 var dmg_proximity = {
-	n_0 = 5,
-	n_1 = 12,
-	n_2 = 5,
-	n_3 = 15,
-	n_4 = 15,
-	n_5 = 15,
-	n_6 = 5,
-	n_7 = 12,
-	n_8 = 5
+	n_0 = 5,  n_1 = 12, n_2 = 5,
+	n_3 = 15, n_4 = 15, n_5 = 15,
+	n_6 = 5,  n_7 = 12, n_8 = 5
 }
 
 var burst_limit = 35
 
+func get_proximity(t=-1):
+	match(t):
+		0: return dmg_proximity.n_0
+		1: return dmg_proximity.n_1
+		2: return dmg_proximity.n_2
+		3: return dmg_proximity.n_3
+		4: return dmg_proximity.n_4
+		5: return dmg_proximity.n_5
+		6: return dmg_proximity.n_6
+		7: return dmg_proximity.n_7
+		8: return dmg_proximity.n_8
+		-1:
+			print('Impossible proximity tile!')
+			return 0
+
 # Grabs tiles where can be attacked by said attack
 func get_grid_atk(atk=0):
+#	print("ATTACK RECEIVED: ")
+#	print(atk)
 	match(atk):
 		0:
 			return [false,true,false,
@@ -71,6 +84,10 @@ func get_grid_atk(atk=0):
 			return [true,false,true,
 					false,true,false,
 					true,false,true]
+		4:
+			return [false, false, false,
+					false, true, false,
+					false, false, false]
 		_:
 			print('Invalid Move!')
 			return null
@@ -139,6 +156,8 @@ func get_lethality(atk=0,cost=0):
 			1: return attacks_cost.rasengan
 			2: return attacks_cost.senpu
 			3: return attacks_cost.sudoku
+	print("Unknown attack..")
+	return 0
 
 func get_defense(def=0):
 	match(def):
