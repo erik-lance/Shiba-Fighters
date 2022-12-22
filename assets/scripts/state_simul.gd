@@ -213,17 +213,29 @@ func calculate_state():
 	
 	print('Finished state '+str(move_num)+' at '+str(depth)+'. H:'+str(final_value))
 
-
+# dir is the position number
+# turn is true if it's the AI's turn to check around it
+# defaults to self_turn
 func check_grid(dir, turn=self_turn):
 	var x
 	var y
 	
+	# adjusts based on turn
+	var atk_x = 0
+	var atk_y = 0
+	
 	if turn:
 		x = cur_state.self_pos_x
 		y = cur_state.self_pos_y
+		
+		atk_x = cur_state.player_pos_x
+		atk_y = cur_state.player_pos_y
 	else:
 		x = cur_state.player_pos_x
 		y = cur_state.player_pos_y
+		
+		atk_x = cur_state.self_pos_x
+		atk_y = cur_state.self_pos_y
 	
 	
 	match(dir):
@@ -248,7 +260,7 @@ func check_grid(dir, turn=self_turn):
 			x+=1
 			y+=1
 	
-	if cur_state.player_pos_x == x and cur_state.player_pos_y == y:
+	if atk_x == x and atk_y == y:
 		return true
 	else:
 		return false
