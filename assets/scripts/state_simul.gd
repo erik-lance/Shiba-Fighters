@@ -85,6 +85,7 @@ func perform_move():
 	# it is time to calculate the state's heuristics
 #	calculate_state()
 
+# Turn is true if it's the AI's turn
 func prep_dets(dets, mn=-1, d=0, parent=null, turn=false):
 #	self.connect('end_state',cluster,'_on_finish_end_state')
 	self.parent = parent
@@ -117,9 +118,11 @@ func prep_dets(dets, mn=-1, d=0, parent=null, turn=false):
 		add_to_group("depth_"+str(d))
 		parent.add_child_state(self)
 		perform_move()
+		return true
 	else:
 		# No use in keeping dead weight.
 		self.queue_free()
+		return false
 
 # Simply checks if out of HP
 func is_game_over():
@@ -250,8 +253,8 @@ func check_grid(dir, turn=self_turn):
 	else:
 		return false
 
-func find_opponent(specific=-1):
-	if specific == -1:
+func find_opponent(specific=null):
+	if specific == null:
 		if check_grid(0): return 0
 		if check_grid(1): return 1
 		if check_grid(2): return 2
