@@ -201,9 +201,9 @@ func calculate_state():
 	# AI should place HP in high regard, therefore it is
 	# multiplied by 2 in terms of heuristic rules
 	final_value -= cur_state.player_hp*2
-	final_value -= cur_state.player_mp
+	final_value -= cur_state.player_mp/4
 	final_value += cur_state.self_hp*2
-	final_value += cur_state.self_mp
+	final_value += cur_state.self_mp/4
 	
 	# Game over
 	if cur_state.player_hp <= 0: final_value = INF
