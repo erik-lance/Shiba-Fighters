@@ -51,7 +51,7 @@ func prepare_tree():
 	# CONCERN: Check for non-existent groups
 	# uses node groups in godot
 	var cur_turn = false
-	while (cur_depth < depth_size-1):
+	while (cur_depth < depth_size):
 		for _node in get_tree().get_nodes_in_group("depth_"+str(cur_depth)):
 			prepare_children(_node, cur_turn)
 		
@@ -63,19 +63,64 @@ func prepare_children(node, is_first_player):
 	# if it's false and first player, it reveals the human is the first player and it's not their
 	# turn yet.
 	
-	if is_first_player:
-		for i in first_player.get_deck_size():
-			var new_state = load(state_link).instance()
-			node.add_child(new_state)
-			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
-			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, is_ai_first_card)
-	else:
-		for i in second_player.get_deck_size():
-			var new_state = load(state_link).instance()
-			node.add_child(new_state)
+	var player_to_prep = null
+	var card_owner = null
+	
+	# If it is AI turn, card_owner = true
+	if is_first_player: 
+		player_to_prep = first_player
+		if is_ai_first_card: card_owner = true
+		else: card_owner = false
+	else: 
+		player_to_prep = second_player
+		if is_ai_first_card: card_owner = false
+		else: card_owner = true
+	
+	var best_child = null
+	var best_val = 0
+	
+	if card_owner: best_val = -INF
+	else: best_val = INF
+	
+	for i in player_to_prep.get_deck_size():
+		var new_state = load(state_link).instance()
+		node.add_child(new_state)
+		# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
+		var exist_node = new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, card_owner)
+		
+		# If node won't be deleted, check if this child is the best child, if so, add and continue
+		# deepening, else, remove it.
+		
+		# This is the move-ordering in AB pruning.
+		# It'll only check moves where it became better, so it's not disregarding previous "good" moves.
+		# It is simply removing useless moves.
+		if exist_node:
+#			new_state.perform_move()
+			var cur_val = new_state.calculate_state()
 			
-			# Prepares with dets of parent, a move num, their parent's depth+1, and the parent itself
-			new_state.prep_dets(node.get_cur_dets(), i, node.get_depth()+1, node, !is_ai_first_card)
+			if card_owner:
+				if cur_val > best_val:
+					new_state.set_h_value(cur_val)
+					best_child = new_state
+					best_val = cur_val
+				else:
+					node.remove_child(new_state)
+					var group_name = "depth_"+str(node.get_depth()+1)
+					new_state.remove_from_group(group_name)
+					new_state.queue_free()
+			else:
+				if cur_val < best_val:
+					new_state.set_h_value(cur_val)
+					best_child = new_state
+					best_val = cur_val
+				else:
+					node.remove_child(new_state)
+					var group_name = "depth_"+str(node.get_depth()+1)
+					new_state.remove_from_group(group_name)
+					new_state.queue_free()
+	
+	
+
 
 # Cleans the node groups made from depths
 func clean_node_groups():
@@ -88,6 +133,8 @@ func clean_node_groups():
 # Searches the whole tree. Once finished, creates a walk to the path
 # and returns the array walk_path in order from root to last node to reach.
 func alpha_beta_search(s):
+	print("\n\n\n ----------- BEGIN AB SEARCH -----------")
+	
 	# Will contain state path of best path
 	var walk_path = []
 	
@@ -99,16 +146,16 @@ func alpha_beta_search(s):
 	
 	# Since AI is the maximizer and player is the minimizer, it has to adjust accordingly.
 	if is_ai_first_card:
-		v = min_value(s,a,b)
-	else:
 		v = max_value(s,a,b)
+	else:
+		v = min_value(s,a,b)
 	
 	walk_path.append(root_state)
 	var cur_depth = 1
 	while (true):
 		# Grabs last element
 		var cur_search = walk_path.back()
-		if cur_search.child_count() <= 0: break
+		if cur_search.get_child_count() <= 0: break
 		
 		var best_node = null
 		var best_val = 0
@@ -121,7 +168,9 @@ func alpha_beta_search(s):
 			if cur_depth % 2 == 0: is_ai_turn = false
 			else: is_ai_turn = true
 		
-		for child_state in cur_search.get_state_children():
+		for child_state in cur_search.get_children():
+#			print("State children: ")
+#			print(cur_search.get_children())
 			if is_ai_turn: # Maximize
 				child_state.get_h_value() > best_val
 				best_node = child_state
@@ -133,9 +182,19 @@ func alpha_beta_search(s):
 		
 		walk_path.append(best_node)
 	
+	print("\n\n -- Final Path --")
+	print(walk_path)
+	for node in walk_path:
+		print(str(node.get_depth()) + ": Move: " +str(node.get_move()) +"  H: "+ str(node.get_h_value()) )
 	return walk_path
 
 func max_value(s,alpha,beta):
+	# Evaluates starting state
+	if(s.get_depth() == 0):
+		var state_h_value = s.calculate_state()
+		s.set_h_value(state_h_value)
+		return state_h_value
+
 	# Static evaluation of state
 	if(s.is_move_playable()):
 		var state_h_value = s.calculate_state()
@@ -143,6 +202,9 @@ func max_value(s,alpha,beta):
 		return state_h_value
 	else:
 		print("Reached immovable state?")
+		print("---- CUR DETS and MOVE NUM ----")
+		print(s.get_cur_dets())
+		print(s.get_move())
 	
 	var maximizing_value = -INF
 	for a in s.get_state_children():
@@ -158,6 +220,12 @@ func max_value(s,alpha,beta):
 	return maximizing_value
 
 func min_value(s, alpha, beta):
+	# Evaluates starting state
+	if(s.get_depth() == 0):
+		var state_h_value = s.calculate_state()
+		s.set_h_value(state_h_value)
+		return state_h_value
+	
 	# Static evaluation of state
 	if(s.is_move_playable()):
 		var state_h_value = s.calculate_state()
@@ -165,6 +233,9 @@ func min_value(s, alpha, beta):
 		return state_h_value
 	else:
 		print("Reached immovable state for minimizer!")
+		print("---- CUR DETS and MOVE NUM ----")
+		print(s.get_cur_dets())
+		print(s.get_move())
 	
 	
 	var minimizing_value = INF
